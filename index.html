@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SDG & Green Skills Chatbot</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0f2f1, #f1f8e9);
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .chatbot-container {
+      width: 90%;
+      max-width: 600px;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .chat-header {
+      background: #66bb6a;
+      color: white;
+      padding: 20px;
+      font-size: 1.6em;
+      font-weight: bold;
+      text-align: center;
+    }
+    .chat-window {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+      background-color: #f9fbe7;
+    }
+    .chat-message {
+      margin: 12px 0;
+      padding: 10px 14px;
+      border-radius: 12px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+    .user-msg {
+      background: #c8e6c9;
+      align-self: flex-end;
+      text-align: right;
+    }
+    .bot-msg {
+      background: #e8f5e9;
+      align-self: flex-start;
+    }
+    .prompt-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      padding: 15px;
+      gap: 10px;
+      background-color: #f1f8e9;
+      border-top: 1px solid #dcedc8;
+    }
+    .prompt-buttons button {
+      flex: 1 1 45%;
+      padding: 12px;
+      background-color: #a5d6a7;
+      border: none;
+      border-radius: 10px;
+      font-size: 1em;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .prompt-buttons button:hover {
+      background-color: #81c784;
+    }
+  </style>
+</head>
+<body>
+  <div class="chatbot-container">
+    <div class="chat-header">🌍 Chat with SDG Bot</div>
+    <div class="chat-window" id="chatWindow">
+      <div class="chat-message bot-msg">Hi there! 👋 Let's explore Sustainable Development Goals (SDGs) and Green Skills. What would you like to know first?</div>
+    </div>
+    <div class="prompt-buttons" id="promptButtons">
+      <button onclick="handlePrompt('intro_sdgs')">What are SDGs?</button>
+      <button onclick="handlePrompt('intro_greenskills')">What are Green Skills?</button>
+      <button onclick="handlePrompt('impact_sdgs')">How SDGs Impact Us</button>
+      <button onclick="handlePrompt('student_actions')">What Students Can Do</button>
+      <button onclick="handlePrompt('career_paths')">Careers in Green Fields</button>
+      <button onclick="handlePrompt('urgent_sdgs')">Urgent Global Goals</button>
+    </div>
+  </div>
+  <script>
+    const chatWindow = document.getElementById('chatWindow');
+    const promptButtons = document.getElementById('promptButtons');
+
+    function addMessage(text, sender = 'bot') {
+      const msg = document.createElement('div');
+      msg.className = `chat-message ${sender === 'user' ? 'user-msg' : 'bot-msg'}`;
+      msg.innerText = text;
+      chatWindow.appendChild(msg);
+      chatWindow.scrollTop = chatWindow.scrollHeight;
+    }
+
+    function handlePrompt(key) {
+      const responses = {
+        intro_sdgs: {
+          user: 'What are SDGs?',
+          bot: 'SDGs are 17 Sustainable Development Goals set by the UN to create a fairer, healthier, and greener world by 2030.',
+          next: [
+            { label: 'List all 17 SDGs', key: 'list_sdgs' },
+            { label: 'Why are they important?', key: 'importance_sdgs' }
+          ]
+        },
+        intro_greenskills: {
+          user: 'What are Green Skills?',
+          bot: 'Green skills are the abilities and knowledge needed to support a sustainable society — including eco-awareness, clean energy, and waste management.',
+          next: [
+            { label: 'Examples of Green Skills', key: 'examples_greenskills' },
+            { label: 'How to learn them?', key: 'learn_greenskills' }
+          ]
+        },
+        impact_sdgs: {
+          user: 'How SDGs Impact Us',
+          bot: 'SDGs influence how we live — from clean water and good health to gender equality and climate action. They shape better societies.',
+          next: [
+            { label: 'SDGs at Home', key: 'sdgs_home' },
+            { label: 'SDGs in School', key: 'sdgs_school' }
+          ]
+        },
+        student_actions: {
+          user: 'What Students Can Do',
+          bot: 'Students can contribute by saving electricity, reducing plastic, creating eco-clubs, and educating peers about sustainability.',
+          next: [
+            { label: 'Project Ideas for Students', key: 'student_projects' },
+            { label: 'Youth Campaigns to Join', key: 'youth_campaigns' }
+          ]
+        },
+        career_paths: {
+          user: 'Careers in Green Fields',
+          bot: 'Green careers include roles like environmental engineer, climate analyst, green architect, solar tech expert, and eco-entrepreneur.',
+          next: [
+            { label: 'Top Green Careers', key: 'top_green_jobs' },
+            { label: 'Courses You Can Take', key: 'green_courses' }
+          ]
+        },
+        urgent_sdgs: {
+          user: 'Urgent Global Goals',
+          bot: 'Climate Action, Clean Water, and Zero Hunger are the most urgent SDGs today due to rising global challenges.',
+          next: [
+            { label: 'What can we do?', key: 'urgent_actions' },
+            { label: "India's Role in SDGs", key: 'india_sdgs' }
+          ]
+        },
+        list_sdgs: 'The 17 SDGs are: No Poverty, Zero Hunger, Good Health, Quality Education, Gender Equality, Clean Water, Affordable Energy, Decent Work, Industry Innovation, Reduced Inequalities, Sustainable Cities, Responsible Consumption, Climate Action, Life Below Water, Life on Land, Peace and Justice, and Partnerships.',
+        importance_sdgs: 'SDGs help align actions across countries to solve common problems and ensure sustainable growth for future generations.',
+        examples_greenskills: 'Examples: organic farming, renewable energy use, eco-design, sustainable construction, efficient transportation.',
+        learn_greenskills: 'You can learn green skills via online courses, school eco-projects, environmental internships, and community events.',
+        sdgs_home: 'At home: save water and energy, recycle, avoid plastics, use cloth bags, grow plants, and talk about sustainability.',
+        sdgs_school: 'In school: set up green clubs, organize SDG days, create awareness posters, and conserve resources.',
+        student_projects: 'Try waste audits, paper recycling, solar lantern projects, or green wall installations in schools.',
+        youth_campaigns: 'Join Earth Day, Fridays for Future, UNEP Youth programs, or SDG Challenges online.',
+        top_green_jobs: 'Top jobs: Climate Scientist, Sustainability Manager, Green Tech Developer, Urban Planner, Eco-Marketer.',
+        green_courses: 'Try courses on Coursera, edX, Skill India, or attend workshops from NGOs like TERI and CEE.',
+        urgent_actions: 'Reduce waste, plant trees, ride bikes, support local farming, and raise awareness. Every step counts.',
+        india_sdgs: 'India’s programs like Swachh Bharat, Ujjwala Yojana, and Solar Missions support SDGs nationally and globally.'
+      };
+
+      const data = responses[key];
+      if (typeof data === 'object') {
+        addMessage(data.user, 'user');
+        setTimeout(() => {
+          addMessage(data.bot, 'bot');
+          updateButtons(data.next);
+        }, 500);
+      } else if (typeof data === 'string') {
+        setTimeout(() => {
+          addMessage(data, 'bot');
+          promptButtons.innerHTML = '<button onclick="location.reload()">🔁 Restart</button>';
+        }, 300);
+      }
+    }
+
+    function updateButtons(options) {
+      if (!options) return;
+      promptButtons.innerHTML = '';
+      options.forEach(opt => {
+        const btn = document.createElement('button');
+        btn.textContent = opt.label;
+        btn.onclick = () => handlePrompt(opt.key);
+        promptButtons.appendChild(btn);
+      });
+    }
+  </script>
+</body>
+</html>
